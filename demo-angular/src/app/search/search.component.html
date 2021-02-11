@@ -1,0 +1,58 @@
+<ActionBar>
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android
+    because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the
+    NavigationButton as a side-drawer button in iOS is not possible,
+    because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+    <Label text="Search"></Label>
+</ActionBar>
+
+<GridLayout class="page__content">
+    <ScrollView>
+        <StackLayout class="page page-content">
+    
+            <GridLayout rows="*, auto, auto">
+                <ListView [items]="imageAssets" *ngIf="!isSingleMode">
+                    <ng-template let-image="item" let-i="index">
+                        <GridLayout columns="auto, *">
+                            <Image [width]="thumbSize" [height]="thumbSize" [src]="image" stretch="aspectFill"></Image>
+                            <Label col="1" [text]="'image ' + i"></Label>
+                        </GridLayout>
+                    </ng-template>
+                </ListView>
+    
+                <Image [src]="imageSrc" *ngIf="isSingleMode" [width]="previewSize" [height]="previewSize"
+                    stretch="aspectFit">
+                </Image>
+                <Button row="1" text="Pick Single" (tap)="onSelectSingleTap()" horizontalAlignment="center"></Button>
+                <Button row="2" text="Pick Multiple" (tap)="onSelectMultipleTap()" horizontalAlignment="center"></Button>
+            </GridLayout>
+    
+    
+            <TextField id="key" class="input" [(ngModel)]="key" [hint]="key" autocorrect="false"
+                autocapitalizationType="none" returnKeyType="next"></TextField>
+    
+            <Button text="Upload" (tap)="uploadFile()"></Button>
+    
+            <Label [text]="'Upload Progress ' + uploadProgress + '%'"></Label>
+            <Progress [value]="uploadProgress"></Progress>
+    
+            <Button text="Download" (tap)="downloadFile()"></Button>
+    
+            <Label [text]="'Download Progress ' + downloadProgress + '%'"></Label>
+            <Progress value="{{downloadProgress}}"></Progress>
+            <Image stretch="fill" horizontalAlignment="center" [src]="src" class="card-img"></Image>
+    
+            <Label text="Status: {{status}}"></Label>
+        </StackLayout>
+    
+    </ScrollView>
+</GridLayout>

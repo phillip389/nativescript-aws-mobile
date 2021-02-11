@@ -1,0 +1,57 @@
+<ActionBar>
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android
+    because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the
+    NavigationButton as a side-drawer button in iOS is not possible,
+    because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem>
+    <Label text="Settings"></Label>
+</ActionBar>
+
+<GridLayout class="page__content">
+
+
+
+    <StackLayout orientation="vertical" class="page">
+
+        <TextField id="username" class="input" [(ngModel)]="user.username" hint="Username" keyboardType="email"
+            autocorrect="false" autocapitalizationType="none" returnKeyType="next"></TextField>
+        <TextField class="input" [(ngModel)]="!this.isEmailorPhoneNumber ? user.attributes.email : user.email
+          " hint="Email" keyboardType="email" autocorrect="false" autocapitalizationType="none" returnKeyType="next">
+        </TextField>
+        <TextField id="password" class="input" [(ngModel)]="user.password" hint="Password" secure="true"></TextField>
+        <TextField id="activationCode" class="input" [(ngModel)]="activationCode" hint="Activation Code"
+            *ngIf="!isRegistering"></TextField>
+        <StackLayout id="registerGroup" *ngIf="isRegistering" orientation="vertical">
+            <TextField id="passwordConfirm" class="input" [(ngModel)]="passwordConfirm" hint="Confirm Password"
+                secure="true"></TextField>
+
+            <TextField class="input" [(ngModel)]="user.attributes.nickname" hint="Nickname"></TextField>
+            <TextField class="input" [(ngModel)]="user.attributes.phone_number" hint="Phone Number"
+                keyboardType="phone">
+            </TextField>
+        </StackLayout>
+
+        <Switch [checked]="isEmailorPhoneNumber" (checkedChange)="onCheckedChange($event)">
+            Usernmae is Email or Phone Number?</Switch>
+        <Button class="btn btn-primary" *ngIf="!isSignedIn" [text]="isRegistering ? 'Register' : 'Login'"
+            (tap)="isRegistering && !isSignedIn ? register() : login()"></Button>
+        <Button class="btn" [text]="!isRegistering ? 'Register an Account' : 'Login to an Account'"
+            (tap)="toggleRegistering()" *ngIf="!isSignedIn"></Button>
+        <Button class="btn" text="Confirm Registration" (tap)="confirmRegistration()"
+            *ngIf="!isRegistering && !isSignedIn"></Button>
+        <Button class="btn" text="Forgot Password" (tap)="forgot()" *ngIf="!isRegistering && !isSignedIn"></Button>
+        <Button class="btn" text="Confirm ForgotPassword" (tap)="confirmForgot()"
+            *ngIf="!isRegistering && !isSignedIn"></Button>
+        <Button class="btn" text="Resend Code" (tap)="resendCode()"></Button>
+        <Button class="btn" text="Refresh Session" (tap)="refreshSession()" *ngIf="isSignedIn"></Button>
+        <Button class="btn" text="Get User Details" (tap)="getUserDetails()" *ngIf="isSignedIn"></Button>
+        <Button class="btn btn-primary" text="Logout" (tap)="logout()" *ngIf="isSignedIn"></Button>
+    </StackLayout>
+</GridLayout>
